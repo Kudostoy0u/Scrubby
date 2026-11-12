@@ -16,7 +16,7 @@ Download `Scrubby.zip` from the [latest release](../../releases/latest), unzip i
 Or build it yourself (needs Xcode 15 or later):
 
 ```bash
-git clone <this repo>
+git clone https://github.com/Kudostoy0u/Scrubby.git
 cd Scrubby
 scripts/build-app.sh
 cp -R build/Scrubby.app /Applications/

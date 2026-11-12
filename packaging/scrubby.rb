@@ -5,10 +5,10 @@ cask "scrubby" do
   version "0.1.0"
   sha256 "REPLACE_WITH_SHA256_OF_Scrubby.zip"
 
-  url "https://github.com/OWNER/Scrubby/releases/download/v#{version}/Scrubby.zip"
+  url "https://github.com/Kudostoy0u/Scrubby/releases/download/v#{version}/Scrubby.zip"
   name "Scrubby"
   desc "Swipe through browser tabs and windows with your trackpad"
-  homepage "https://github.com/OWNER/Scrubby"
+  homepage "https://github.com/Kudostoy0u/Scrubby"
 
   depends_on macos: ">= :sonoma"
 
