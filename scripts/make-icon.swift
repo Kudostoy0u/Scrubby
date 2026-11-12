@@ -76,4 +76,5 @@ for base in [16, 32, 128, 256, 512] {
     }
 }
 run(["iconutil", "-c", "icns", iconset, "-o", "Resources/AppIcon.icns"])
-print("Wrote Resources/AppIcon.icns")
+run(["sips", "-z", "256", "256", master, "--out", "Resources/icon.png"])   // for the README
+print("Wrote Resources/AppIcon.icns and Resources/icon.png")

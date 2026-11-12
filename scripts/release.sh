@@ -59,4 +59,17 @@ Open it and follow the setup screen.
 SHA-256: \`$SHA\`
 NOTES
 
-echo "Released $TAG. Commit packaging/scrubby.rb to record the new sha256."
+git add packaging/scrubby.rb
+git commit -q -m "Record $TAG checksum in the Homebrew cask"
+git push -q
+
+# Publish the new version to the Homebrew tap, if it's checked out next to this repo.
+TAP_DIR="${TAP_DIR:-../homebrew-tap}"
+if [ -d "$TAP_DIR/Casks" ]; then
+  echo "==> Updating Homebrew tap"
+  sed '1,3d' packaging/scrubby.rb > "$TAP_DIR/Casks/scrubby.rb"
+  git -C "$TAP_DIR" commit -q -am "scrubby $VERSION"
+  git -C "$TAP_DIR" push -q
+fi
+
+echo "Released $TAG."

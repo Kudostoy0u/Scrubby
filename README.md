@@ -1,93 +1,118 @@
-# Scrubby
+<p align="center">
+  <img src="Resources/icon.png" width="128" height="128" alt="Scrubby icon">
+</p>
 
-**Swipe through browser tabs and windows on your Mac's trackpad, like dragging a scrollbar.**
+<h1 align="center">Scrubby</h1>
 
-- **Three fingers sideways** in your browser: move to the next or previous tab. Keep dragging to move across several tabs in one swipe.
-- **Four fingers sideways** anywhere: move through your open windows, like ⌘-Tab but for windows. The window's name flashes on screen as you go.
+<p align="center">
+  <b>Swipe through browser tabs and windows with your Mac's trackpad.</b><br>
+  Free, open source, and tiny. Lives in your menu bar.
+</p>
 
-Scrubby is a tiny menu bar app. It's free and open source, and it uses only standard macOS features.
+<p align="center">
+  <img src="docs/demo.gif" alt="Scrubby switching between browser tabs with three-finger swipes, then between windows with a four-finger swipe">
+</p>
 
-<!-- TODO: add a demo GIF here, e.g. docs/demo.gif -->
+## What it does
+
+| Gesture | What happens |
+| --- | --- |
+| **Three fingers, sideways** in your browser | Moves to the tab on the left or right. Keep dragging to keep moving, like dragging a scrollbar across your tabs. |
+| **Four fingers, sideways** anywhere | Moves to your next or previous window, like ⌘-Tab but for windows. The window's name flashes up as you go. |
+
+A quick flick moves one tab or window, and a longer swipe moves across several.
 
 ## Install
 
-Download `Scrubby.zip` from the [latest release](../../releases/latest), unzip it, and drag **Scrubby** to your Applications folder.
-
-Or build it yourself (needs Xcode 15 or later):
+With [Homebrew](https://brew.sh):
 
 ```bash
-git clone https://github.com/Kudostoy0u/Scrubby.git
-cd Scrubby
-scripts/build-app.sh
-cp -R build/Scrubby.app /Applications/
+brew trust kudostoy0u/tap
 ```
 
-If macOS says the app can't be opened because it's from an unidentified developer, right-click Scrubby in Applications and choose **Open**.
+```bash
+brew install --cask kudostoy0u/tap/scrubby
+```
 
-## Setup
+The first command tells Homebrew it's OK to install from Scrubby's tap. You only need it once.
 
-Scrubby opens a setup screen the first time it runs, with a checkmark for each step once it's done:
+Or download **Scrubby.zip** from the [latest release](https://github.com/Kudostoy0u/Scrubby/releases/latest), unzip it, and drag Scrubby into your Applications folder.
 
-1. **Allow Scrubby to control your Mac.** Open System Settings → Privacy & Security → **Accessibility** (called **Device Control and Data Access** on newer macOS) and turn on Scrubby. Scrubby needs this to see trackpad swipes and to press the tab-switching shortcut for you.
-2. **Free up the swipes macOS is using.** In System Settings → Trackpad → More Gestures:
-   - Set **Swipe between pages** to **Scroll left or right with two fingers**, or turn it off.
-   - Turn off **Swipe between full-screen applications**.
+Scrubby is signed and notarized by Apple, so it opens without warnings. It needs macOS 14 Sonoma or later.
 
-## Supported browsers
+## Set up (one minute)
 
-Brave, Chrome, Arc, Dia, Edge, Vivaldi, Opera, Chromium, Firefox, Zen and Safari. You can turn tab swiping off for any of them in Settings.
+Open Scrubby. Its setup screen checks off each step as you finish it:
+
+1. **Let Scrubby control your Mac.** It needs this to see your swipes and press the tab-switching shortcut for you. Click **Open Settings**, then turn on Scrubby in the list. The list is called **Accessibility** on older macOS and **Device Control and Data Access** on newer macOS.
+2. **Free up the swipes macOS is using.** Click **Open Trackpad Settings**, then go to **More Gestures**:
+   - set **Swipe between pages** to **Scroll left or right with two fingers**, or turn it off
+   - turn off **Swipe between full-screen applications**
+
+That's it. Look for the hand icon in your menu bar.
+
+## Works with
+
+Brave, Chrome, Arc, Dia, Edge, Vivaldi, Opera, Chromium, Firefox, Zen and Safari. You can turn tab swiping off for any of them.
 
 ## Settings
 
 Click the hand icon in the menu bar → **Settings…** to:
 
-- turn each gesture on or off
-- change how far you swipe before the first tab or window switch, and between further ones
+- turn either gesture on or off
+- change how far you swipe before the first switch, and between further ones
 - choose which browsers tab swiping works in
-- open Scrubby when you log in
+- have Scrubby open when you log in
+- pause Scrubby for a while (also right in the menu)
+
+## Questions
+
+**Is it safe to give Scrubby this permission?**
+Scrubby only reads trackpad scrolling and touches, and only sends tab-switching shortcuts and window-focus requests. It doesn't read what you type, collect anything, or connect to the internet. All the code is here, and it's under 1,000 lines.
+
+**My normal two-finger scrolling still works, right?**
+Yes. Scrubby only takes over sideways swipes with three or four fingers.
+
+**Swiping doesn't do anything.**
+Open Settings from the menu bar icon and check that all three setup steps have a green checkmark. If the icon is a warning triangle, Scrubby doesn't have its permission yet. If you updated Scrubby and it stopped working, remove it from the permission list with **−** and add it again.
+
+**Swiping goes the wrong way, or switches too easily or not easily enough.**
+Scrubby follows your scroll direction setting. You can change the swipe distances under **Sensitivity** in Settings.
+
+**How do I uninstall it?**
+Quit it from the menu bar, then run `brew uninstall --cask scrubby`, or drag it from Applications to the Trash.
 
 ## How it works
 
-macOS doesn't let apps receive three- and four-finger swipes directly. Scrubby combines two signals instead:
+macOS doesn't let apps receive three- and four-finger swipes directly, so Scrubby puts two signals together:
 
-- **Finger count** comes from the trackpad's touch events. macOS often sends these with no fingers listed, even in the middle of a swipe, so Scrubby ignores those and remembers the last real count for a moment.
-- **Movement** comes from the smooth sideways scroll events the trackpad sends while several fingers drag. Every so many points of movement moves one tab or window.
+- **How many fingers:** from the trackpad's touch events. These often arrive with no fingers listed, even mid-swipe, so Scrubby ignores those and remembers the last real count for a moment.
+- **How far they moved:** from the smooth sideways scroll events the trackpad sends while several fingers drag. Every so many points of movement switches one tab or window. For a quick flick, the coasting scroll after your fingers lift counts too.
 
-Each swipe is set as a tab swipe, a window swipe or a normal scroll when it starts, and stays that way until your fingers lift. Scrubby blocks the scroll events of tab and window swipes, along with the coasting scroll that follows them, so the page doesn't scroll and the browser doesn't go back or forward.
+Each swipe is decided when it starts (tab swipe, window swipe, or normal scrolling) and stays that way until your fingers lift. Scrubby blocks the scrolling from tab and window swipes, so the page doesn't move and the browser doesn't go back or forward.
 
-Tabs are switched with each browser's own shortcut: ⌘⌥← / ⌘⌥→, or ⌃⇧⇥ / ⌃⇥ in Safari.
+Tabs switch using each browser's own shortcut: ⌘⌥← / ⌘⌥→, or ⌃⇧⇥ / ⌃⇥ in Safari.
 
-## Development
+## For developers
 
 ```bash
-swift build                 # debug build
-scripts/build-app.sh        # release .app in build/, signed for this Mac only
+git clone https://github.com/Kudostoy0u/Scrubby.git
+cd Scrubby
+scripts/build-app.sh        # builds build/Scrubby.app, signed for this Mac only
 ```
-
-The code is in `Sources/Scrubby`:
 
 | File | What it does |
 | --- | --- |
-| `GestureEngine.swift` | Listens for trackpad events and turns swipes into actions |
-| `WindowSwitcher.swift` | Finds the windows on the current Space and focuses the next one |
-| `Browsers.swift` | Supported browsers and their tab shortcuts |
-| `SettingsView.swift` | The Settings and setup window |
-| `SystemStatus.swift` | Checks permissions and trackpad settings |
-| `HUD.swift` | The on-screen window name |
+| `Sources/Scrubby/GestureEngine.swift` | Listens for trackpad events and turns swipes into actions |
+| `Sources/Scrubby/WindowSwitcher.swift` | Finds the windows on the current Space and focuses the next one |
+| `Sources/Scrubby/Browsers.swift` | Supported browsers and their tab shortcuts |
+| `Sources/Scrubby/SettingsView.swift` | The Settings and setup window |
+| `Sources/Scrubby/SystemStatus.swift` | Checks the permission and trackpad settings |
+| `Sources/Scrubby/HUD.swift` | The window name that flashes on screen |
 
-**Permission resets after rebuilding:** macOS ties the Accessibility permission to the app's signature. Builds signed for this Mac only get a new signature every time, so after reinstalling a new build you may need to turn Scrubby off and on again in the Accessibility list (or remove it and add it back).
+macOS ties the permission to the app's signature, and local builds get a new signature each time. After installing a new local build, remove Scrubby from the permission list and add it again.
 
-## Releasing
-
-People can open a release without warnings only if it's signed with a Developer ID and notarized by Apple, which needs an [Apple Developer account](https://developer.apple.com/programs/).
-
-```bash
-scripts/release.sh 0.2.0
-```
-
-This builds the app, signs it with your Developer ID, notarizes it with Apple, tags the commit and publishes `Scrubby.zip` as a GitHub release. The one-time setup it needs is listed at the top of `scripts/release.sh`. A Homebrew cask template is in `packaging/scrubby.rb`, and the script keeps its version and checksum up to date.
-
-The app icon is drawn by `scripts/make-icon.swift`. Run `swift scripts/make-icon.swift` to regenerate `Resources/AppIcon.icns`.
+**Releasing:** `scripts/release.sh 0.2.0` builds the app, signs it with your Developer ID, notarizes it with Apple and publishes the GitHub release. It also updates the [Homebrew tap](https://github.com/Kudostoy0u/homebrew-tap) when that repo is checked out next to this one. The one-time setup is listed at the top of the script. To redraw the app icon, run `swift scripts/make-icon.swift`.
 
 ## License
 

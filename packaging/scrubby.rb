@@ -1,6 +1,6 @@
-# Homebrew cask template. To publish, put this in a tap repo (e.g. <you>/homebrew-tap,
-# at Casks/scrubby.rb) and fill in the version, sha256 and GitHub owner.
-# Users then install with:  brew install --cask <you>/tap/scrubby
+# Source for Casks/scrubby.rb in github.com/Kudostoy0u/homebrew-tap (these 3 header
+# lines are dropped there). scripts/release.sh updates the version and sha256 and
+# copies it into the tap. Install: brew install --cask kudostoy0u/tap/scrubby
 cask "scrubby" do
   version "0.1.0"
   sha256 "9ca260d3a4e5ac421b97bae575222020cbb3a367a54bc94bc6a5303eb3a1a598"
@@ -10,7 +10,7 @@ cask "scrubby" do
   desc "Swipe through browser tabs and windows with your trackpad"
   homepage "https://github.com/Kudostoy0u/Scrubby"
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "Scrubby.app"
 
