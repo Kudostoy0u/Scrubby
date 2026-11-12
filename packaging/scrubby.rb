@@ -3,7 +3,7 @@
 # Users then install with:  brew install --cask <you>/tap/scrubby
 cask "scrubby" do
   version "0.1.0"
-  sha256 "REPLACE_WITH_SHA256_OF_Scrubby.zip"
+  sha256 "9ca260d3a4e5ac421b97bae575222020cbb3a367a54bc94bc6a5303eb3a1a598"
 
   url "https://github.com/Kudostoy0u/Scrubby/releases/download/v#{version}/Scrubby.zip"
   name "Scrubby"
